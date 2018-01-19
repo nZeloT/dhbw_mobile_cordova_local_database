@@ -1,0 +1,1 @@
+# dhbw_mobile_cordova_local_database
