@@ -2,3 +2,7 @@
 *.iml
 .npmignore
 /platforms
+/hooks
+/node_modules
+/plugins
+/package-lock.json
