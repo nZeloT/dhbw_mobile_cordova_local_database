@@ -83,3 +83,16 @@ db.close(successcb, errorcb);
 Detaillierter Informationen bietet auch hier die [Offizielle Dokumentation](https://github.com/litehelpers/Cordova-sqlite-storage#close-a-database-object)
 
 ## Demo App
+
+Die in diesem Repository bereitgestellte Demo App setzt konsistent auf asynchrone Transaktionen, auch wenn es nicht unbedingt notwendig wäre.
+
+### Screenahots
+<p align="center">
+  <img src="/app_pics/startScreen.png" width="250"/>
+  <img src="/app_pics/afterSelect.png" width="250"/>
+  <img src="/app_pics/afterClose.png" width="250"/>
+</p><br>
+<p align="center">
+  <img src="/app_pics/whileInsert.png" width="250"/>
+  <img src="/app_pics/afterInsert.png" width="250"/>
+</p>
