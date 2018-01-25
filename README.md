@@ -88,11 +88,11 @@ Die in diesem Repository bereitgestellte Demo App setzt konsistent auf asynchron
 
 ### Screenahots
 <p align="center">
-  <img src="/app_pics/startScreen.png" width="250"/>
-  <img src="/app_pics/afterSelect.png" width="250"/>
-  <img src="/app_pics/afterClose.png" width="250"/>
+  <img src="/app_pics/startScreen.PNG" width="250"/>
+  <img src="/app_pics/afterSelect.PNG" width="250"/>
+  <img src="/app_pics/afterClose.PNG" width="250"/>
 </p><br>
 <p align="center">
-  <img src="/app_pics/whileInsert.png" width="250"/>
-  <img src="/app_pics/afterInsert.png" width="250"/>
+  <img src="/app_pics/whileInsert.PNG" width="250"/>
+  <img src="/app_pics/afterInsert.PNG" width="250"/>
 </p>
