@@ -37,8 +37,22 @@
     <body>
         <div class="app">
             <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
+            <div id="deviceready" >
 
+            </div>
+            <div id="select">
+                <button type="button" id="selectBtn" >Select</button>
+            </div>
+            <div id="selectresults" >
+            </div>
+            <div id="insert" >
+                Firstname: <input type="text" name="firstname" id="firstname" ><br>
+                Lastname<input type="text" name="lastname" id="lastname" ><br>
+                <button type="button" id="insertBtn">Insert</button>
+            </div>
+            <div id="openclose">
+                <button type="button" id="openBtn" >Open</button>
+                <button type="button" id="closeBtn" >Close</button>
             </div>
         </div>
         <script type="text/javascript" src="cordova.js"></script>

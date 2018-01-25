@@ -16,10 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+var db = null;
+
 var app = {
     // Application Constructor
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+
+        document.getElementById('selectBtn').addEventListener('click', uiController.handleSelect.bind(uiController), false);
+        document.getElementById('insertBtn').addEventListener('click', uiController.prepareInsert.bind(uiController), false);
+        document.getElementById('openBtn').addEventListener('click', this.onDeviceReady.bind(this), false);
+        document.getElementById('closeBtn').addEventListener('click', this.closeDatabase.bind(this), false);
     },
 
     // deviceready Event Handler
@@ -29,18 +37,18 @@ var app = {
     onDeviceReady: function() {
         let that = this;
 
-        window.sqlitePlugin.openDatabase({
+        db = window.sqlitePlugin.openDatabase({
             name: 'thisIsMyDummyDB.db',
             location: 'default'
         }, function(db) {
-            console.log("Database open.")
-            that.createTable(db);
+            console.log("Database open.");
+            that.createTable();
         }, function (error){
-          document.getElementById("deviceready").appendChild(that.createTextItem("Oo -.- " + error));
+          console.log(error);
         });
     },
 
-    createTable: function(db) {
+    createTable: function() {
         let that = this;
         db.transaction(function(tr){
           tr.executeSql('CREATE TABLE IF NOT EXISTS person (firstname, lastname)');
@@ -48,28 +56,28 @@ var app = {
             console.log(error);
         }, function() {
             console.log("Table created");
-            that.insertItem(db, "Ich", "Du");
+            uiController.databaseOpened();
         })
     },
 
-    selectItems: function(db){
+    selectItems: function(){
         let that = this;
         db.transaction(function(tr){
           tr.executeSql('SELECT firstname, lastname FROM person', [], function (tr, rs) {
               for(let x = 0; x < rs.rows.length; x++) {
                 let text = rs.rows.item(x).firstname + ", " + rs.rows.item(x).lastname;
-                document.getElementById("deviceready").appendChild(
+                document.getElementById("selectresults").appendChild(
                         that.createTextItem(text));
               }
           });
         }, function(error){
             console.log(error);
         }, function() {
-            that.closeDatabase(db);
+            console.log("Select Okay");
         })
     },
 
-    insertItem: function(db, first, last) {
+    insertItem: function(first, last) {
         let that = this;
         console.log("on insert");
       db.transaction(function (tx) {
@@ -89,13 +97,13 @@ var app = {
       }, function(error) {
         console.log('transaction error: ' + error.message);
       }, function() {
-        console.log('transaction ok');
-        that.selectItems(db);
+        console.log('Insert Okay');
       });
     },
 
-    closeDatabase: function(db) {
+    closeDatabase: function() {
         db.close();
+        uiController.databaseClosed();
     },
 
     createTextItem: function(text){
@@ -105,6 +113,45 @@ var app = {
         return node;
     }
 
+};
+
+var uiController = {
+    databaseOpened: function(){
+      document.getElementById('openBtn').disabled = true;
+      document.getElementById('closeBtn').disabled = false;
+      document.getElementById('selectBtn').disabled = false;
+      document.getElementById('insertBtn').disabled = false;
+      document.getElementById('firstname').disabled = false;
+      document.getElementById('lastname').disabled = false;
+    },
+
+    databaseClosed: function() {
+      document.getElementById('openBtn').disabled = false;
+      document.getElementById('closeBtn').disabled = true;
+      document.getElementById('selectBtn').disabled = true;
+      document.getElementById('insertBtn').disabled = true;
+      document.getElementById('firstname').disabled = true;
+      document.getElementById('lastname').disabled = true;
+    },
+
+    prepareInsert: function() {
+      let first = document.getElementById('firstname').value;
+      let last = document.getElementById('lastname').value;
+
+      console.log(first, last);
+
+      app.insertItem(first, last);
+    },
+
+    handleSelect: function(){
+      this.clearSelection();
+      app.selectItems();
+    },
+
+    clearSelection: function() {
+      let selectNode = document.getElementById('selectresults');
+      selectNode.innerHTML = '';
+    }
 };
 
 app.initialize();
