@@ -96,3 +96,55 @@ Die in diesem Repository bereitgestellte Demo App setzt konsistent auf asynchron
   <img src="/app_pics/whileInsert.PNG" width="250"/>
   <img src="/app_pics/afterInsert.PNG" width="250"/>
 </p>
+
+### Funktionalität
+Die App bietet verschiedene Buttons, die verschiedene Funktionen ansteuern. Sobald das Device bereit ist wird automatisch eine Datenbank geöffnet.
+```javascript
+onDeviceReady: function() {
+        let that = this;
+
+        db = window.sqlitePlugin.openDatabase({
+            name: 'thisIsMyDummyDB.db',
+            location: 'default'
+        }, function(db) {
+            console.log("Database open.");
+            that.createTable();
+        }, function (error){
+          console.log(error);
+        });
+    }
+```
+
+Beim Initialisieren der App werden die Button Events außerdem verschiedenen Controller Funktionen zugeordnet.
+```javascript
+initialize: function() {
+        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+
+        document.getElementById('selectBtn').addEventListener('click', uiController.handleSelect.bind(uiController), false);
+        document.getElementById('insertBtn').addEventListener('click', uiController.prepareInsert.bind(uiController), false);
+        document.getElementById('openBtn').addEventListener('click', this.onDeviceReady.bind(this), false);
+        document.getElementById('closeBtn').addEventListener('click', this.closeDatabase.bind(this), false);
+    }
+```
+
+Beim Selektieren der Einträge von der Datenbank wird zuvor die vorherige Slektionsliste gelöscht. Entscheident hierbei scheint es auch zu sein, die gewünschten Spalten der tabelle explizit zu nennen.
+```javascript
+selectItems: function(){
+        let that = this;
+        db.transaction(function(tr){
+          tr.executeSql('SELECT firstname, lastname FROM person', [], function (tr, rs) {
+              for(let x = 0; x < rs.rows.length; x++) {
+                let text = rs.rows.item(x).firstname + ", " + rs.rows.item(x).lastname;
+                document.getElementById("selectresults").appendChild(
+                        that.createTextItem(text));
+              }
+          });
+        }, function(error){
+            console.log(error);
+        }, function() {
+            console.log("Select Okay");
+        })
+    }
+```
+
+Alle weiteren Funktionalitäten können in der ``index.js`` nachgelesen werden.
